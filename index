@@ -1,21 +1,25 @@
-'use client'
-
 import React, { useState, useEffect, useRef } from 'react';
-import './styles.css';
+import './App.css';
 
 const HighlightTextarea: React.FC = () => {
   const [text, setText] = useState<string>(
-    "This demo shows how to highlight specific keywords within a textarea. Feel free to edit this text. Keywords like highlight, JavaScript, and text will be highlighted."
+    "This demo shows how to highlight specific keywords within a textarea. Feel free to edit this text. Words containing 'w' or 'g' will be highlighted."
   );
-
-  const keywords = ["highlight", "JavaScript", "text"]; // Add your keywords here
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
   const applyHighlights = (text: string): string => {
-    const regex = new RegExp(`(${keywords.join('|')})`, 'gi');
-    return text.replace(regex, '<mark>$&</mark>').replace(/\n$/g, '\n\n');
+    const words = text.split(' ');
+    return words
+      .map(word => {
+        if (word.toLowerCase().includes('w') || word.toLowerCase().includes('g')) {
+          return `<mark>${word}</mark>`;
+        }
+        return word;
+      })
+      .join(' ')
+      .replace(/\n$/g, '\n\n');
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -47,7 +51,6 @@ const HighlightTextarea: React.FC = () => {
   }, []);
 
   return (
-    <div>
     <div className="container">
       <div ref={highlightsRef} className="highlights"></div>
       <textarea
@@ -57,16 +60,13 @@ const HighlightTextarea: React.FC = () => {
         className="textarea"
       ></textarea>
     </div>
-    
-
-    <textarea rows={10} cols={40} style={{ marginTop: '100px' }}></textarea>
-    </div>
   );
 };
 
 export default HighlightTextarea;
 
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 *,
 *::before,
@@ -123,4 +123,3 @@ mark {
   background-color: #b1d5e5;
   color: #444;
 }
-
