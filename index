@@ -9,11 +9,12 @@ const HighlightTextarea: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
-  const applyHighlights = (text: string): string => {
+  const applyHighlights = (text: string, highlightChars: string[]): string => {
+    const regex = new RegExp(`(${highlightChars.join('|')})`, 'gi');
     const words = text.split(' ');
     return words
       .map(word => {
-        if (word.toLowerCase().includes('w') || word.toLowerCase().includes('g')) {
+        if (highlightChars.some(char => word.toLowerCase().includes(char))) {
           return `<mark>${word}</mark>`;
         }
         return word;
@@ -34,8 +35,9 @@ const HighlightTextarea: React.FC = () => {
   };
 
   useEffect(() => {
+    const highlightChars = ['w', 'g']; // Define characters to highlight
     if (highlightsRef.current) {
-      highlightsRef.current.innerHTML = applyHighlights(text);
+      highlightsRef.current.innerHTML = applyHighlights(text, highlightChars);
     }
   }, [text]);
 
