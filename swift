@@ -9,16 +9,13 @@ const HighlightTextarea: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
-  const applyHighlights = (text: string, highlightChars: string[]): string => {
-    const regex = new RegExp(`([a-zA-Z0-9/\\-\\?:().,'+])`, 'gi');
-    const words = text.split(' ');
-    return words
-      .map(word => {
-        if (highlightChars.some(char => regex.test(word))) {
-          return `<mark>${word}</mark>`;
-        }
-        return `<span class="non-highlight">${word}</span>`;
-      })
+  const highlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-?:().,\'+)';
+
+  const applyHighlights = (text: string, highlightChars: string): string => {
+    const regex = new RegExp(`([${highlightChars.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}])`, 'g');
+    return text
+      .split(' ')
+      .map(word => word.replace(regex, '<mark>$1</mark>'))
       .join(' ')
       .replace(/\n$/g, '\n\n');
   };
@@ -35,7 +32,6 @@ const HighlightTextarea: React.FC = () => {
   };
 
   useEffect(() => {
-    const highlightChars = ['w', 'g', '-', '/', ':', '(', ')', '.', ',', '\'', '+', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     if (highlightsRef.current) {
       highlightsRef.current.innerHTML = applyHighlights(text, highlightChars);
     }
@@ -66,7 +62,6 @@ const HighlightTextarea: React.FC = () => {
 };
 
 export default HighlightTextarea;
-
 
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
@@ -125,8 +120,4 @@ body {
 mark {
   background-color: #b1d5e5;
   color: #444;
-}
-
-.non-highlight {
-  color: blue;
 }
