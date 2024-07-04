@@ -9,14 +9,12 @@ const HighlightTextarea: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
-  const highlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-?:().,\'+)';
+  const applyHighlights = (text: string): string => {
+    const nonHighlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-?:().,\'+';
+    const regex = new RegExp(`([^${nonHighlightChars}])`, 'g');
 
-  const applyHighlights = (text: string, highlightChars: string): string => {
-    const regex = new RegExp(`([${highlightChars.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}])`, 'g');
     return text
-      .split(' ')
-      .map(word => word.replace(regex, '<mark>$1</mark>'))
-      .join(' ')
+      .replace(regex, '<mark>$1</mark>')
       .replace(/\n$/g, '\n\n');
   };
 
@@ -33,7 +31,7 @@ const HighlightTextarea: React.FC = () => {
 
   useEffect(() => {
     if (highlightsRef.current) {
-      highlightsRef.current.innerHTML = applyHighlights(text, highlightChars);
+      highlightsRef.current.innerHTML = applyHighlights(text);
     }
   }, [text]);
 
@@ -62,6 +60,7 @@ const HighlightTextarea: React.FC = () => {
 };
 
 export default HighlightTextarea;
+
 
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
