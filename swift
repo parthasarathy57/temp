@@ -11,9 +11,18 @@ const HighlightTextarea: React.FC = () => {
 
   const applyHighlights = (text: string, highlightChars: string[]): string => {
     const regex = new RegExp(`[${highlightChars.join('')}]`, 'gi');
-    return text
-      .replace(regex, match => `<mark>${match}</mark>`)
-      .replace(/\n$/g, '\n\n');
+    const words = text.split(/(\s+)/); // Split by spaces while keeping spaces
+    return words
+      .map((word, index) => {
+        if (/\s+/.test(word)) {
+          return word; // Keep spaces unchanged
+        } else if (regex.test(word)) {
+          return `<mark>${word}</mark>`; // Highlight words containing specified chars
+        } else {
+          return word; // Other words remain unchanged
+        }
+      })
+      .join('');
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,7 +37,7 @@ const HighlightTextarea: React.FC = () => {
   };
 
   useEffect(() => {
-    const highlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
+    const highlightChars = ['w', 'g']; // Define characters to highlight
     if (highlightsRef.current) {
       highlightsRef.current.innerHTML = applyHighlights(text, highlightChars);
     }
@@ -59,63 +68,3 @@ const HighlightTextarea: React.FC = () => {
 };
 
 export default HighlightTextarea;
-
-
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 30px;
-  background-color: #f0f0f0;
-}
-
-.container {
-  position: relative;
-  width: 460px;
-  height: 180px;
-  font: 20px/28px 'Open Sans', sans-serif;
-}
-
-.textarea,
-.highlights {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  font: 20px/28px 'Open Sans', sans-serif;
-  letter-spacing: 1px;
-  border: 2px solid #74637f;
-  resize: none;
-  overflow: auto;
-}
-
-.textarea {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: transparent;
-  color: transparent;
-  caret-color: #444;
-  z-index: 2;
-}
-
-.highlights {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  z-index: 1;
-  pointer-events: none;
-  color: #444;
-}
-
-mark {
-  background-color: #b1d5e5;
-  color: #444;
-}
