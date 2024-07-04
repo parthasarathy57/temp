@@ -9,12 +9,10 @@ const HighlightTextarea: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
-  const applyHighlights = (text: string): string => {
-    const nonHighlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-?:().,\'+';
-    const regex = new RegExp(`([^${nonHighlightChars}])`, 'g');
-
+  const applyHighlights = (text: string, highlightChars: string[]): string => {
+    const regex = new RegExp(`[${highlightChars.join('')}]`, 'gi');
     return text
-      .replace(regex, '<mark>$1</mark>')
+      .replace(regex, match => `<mark>${match}</mark>`)
       .replace(/\n$/g, '\n\n');
   };
 
@@ -30,8 +28,9 @@ const HighlightTextarea: React.FC = () => {
   };
 
   useEffect(() => {
+    const highlightChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
     if (highlightsRef.current) {
-      highlightsRef.current.innerHTML = applyHighlights(text);
+      highlightsRef.current.innerHTML = applyHighlights(text, highlightChars);
     }
   }, [text]);
 
