@@ -1,0 +1,15 @@
+Computer-based terminals communicating with SWIFT use EBCDIC code. When an "x" is indicated in the format of a field, the character set is as follows:
+
+abcdefghijklmnopqrstuvwxyz
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+0123456789
+
+/-?:().,'+
+
+ CrLf Space
+
+The characters Cr and Lf must never be used as single characters and must only be used together in the sequence CrLf, that is, LfCr is not allowed.
+
+When the character sequence CrLf is used in a field format with several lines, it is used to indicate the end of one line of text and the start of the next line of text. 206469
