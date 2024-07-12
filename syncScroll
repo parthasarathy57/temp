@@ -1,0 +1,15 @@
+const syncScroll = () => {
+  if (textareaRef.current && highlightsRef.current) {
+    const textarea = textareaRef.current;
+    const highlights = highlightsRef.current;
+
+    // Calculate the scroll percentage of the textarea
+    const scrollTopPercentage = textarea.scrollTop / (textarea.scrollHeight - textarea.clientHeight);
+    const scrollLeftPercentage = textarea.scrollLeft / (textarea.scrollWidth - textarea.clientWidth);
+
+    // Apply the same scroll percentage to the highlights
+    highlights.scrollTop = scrollTopPercentage * (highlights.scrollHeight - highlights.clientHeight);
+    highlights.scrollLeft = scrollLeftPercentage * (highlights.scrollWidth - highlights.clientWidth);
+  }
+};
+
