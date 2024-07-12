@@ -1,9 +1,19 @@
 Switft free Text X
+ const swiftCodeChars = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
+    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+    't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
+    '8', '9', '/', '-', '?', ':', '(', ')', '.', "'", '+'
+  ];
 
+sentance
+-------
 1)During the meeting, the CEO emphasized growth targets: 15% increase in Q3, 20% in Q4. Achieving these requires collaboration, innovation, and strategic planning from all departments. Let's excel together!
 2)cg@gmail.com
 
-Swift y 
+Switft free Text Y
+
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 0123456789
@@ -12,7 +22,11 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 Space
 
-Swift z
+sentance
+-------
+During Q3, our target is a 15% increase in revenue. Effective strategies: innovation, collaboration, and customer engagement. Let's exceed expectations and achieve remarkable growth together!
+
+Switft free Text Z
 
 abcdefghijklmnopqrstuvwxyz
 
@@ -25,4 +39,8 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 @#_
 
 Cr Lf Space
+
+sentance
+-------
+Our Q3 report shows a 15% increase in revenue! Strategic planning, market analysis, and team collaboration are key factors. Let's maintain this momentum and aim for a 20% growth in Q4.
 
