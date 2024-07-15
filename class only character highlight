@@ -1,0 +1,223 @@
+import React, { Component, createRef, ChangeEvent } from 'react';
+import './App.css';
+
+type State = {
+  text: string;
+};
+
+class HighlightTextarea extends Component<{}, State> {
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  highlightsRef: React.RefObject<HTMLDivElement>;
+
+  swiftCodeChars: string[];
+
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      text: "This demo shows how to highlight specific keywords within a textarea. Feel free to edit this text. Words containing 'w' or 'g' will be highlighted.",
+    };
+
+    this.textareaRef = createRef<HTMLTextAreaElement>();
+    this.highlightsRef = createRef<HTMLDivElement>();
+
+    this.swiftCodeChars = [
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z',
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'f',
+      'g',
+      'h',
+      'i',
+      'j',
+      'k',
+      'l',
+      'm',
+      'n',
+      'o',
+      'p',
+      'q',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+      'x',
+      'y',
+      'z',
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '/',
+      '-',
+      '?',
+      ':',
+      '(',
+      ')',
+      '.',
+      "'",
+      '+',
+      ' ',
+    ]; // Default Swift code characters
+  }
+
+  applyHighlights = (text: string, swiftCodeChars: string[]): string => {
+    return text
+      .split('')
+      .map((char) => {
+        if (!swiftCodeChars.includes(char)) {
+          return `<mark>${char}</mark>`;
+        }
+        return char;
+      })
+      .join('')
+      .replace(/\n$/g, '\n\n');
+  };
+
+  handleInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ text: event.target.value });
+  };
+
+  syncScroll = () => {
+    if (this.textareaRef.current && this.highlightsRef.current) {
+      this.highlightsRef.current.scrollTop = this.textareaRef.current.scrollTop;
+      this.highlightsRef.current.scrollLeft =
+        this.textareaRef.current.scrollLeft;
+    }
+  };
+
+  updateHighlights = () => {
+    if (this.highlightsRef.current) {
+      this.highlightsRef.current.innerHTML = this.applyHighlights(
+        this.state.text,
+        this.swiftCodeChars
+      );
+    }
+  };
+
+  componentDidMount() {
+    this.updateHighlights();
+    if (this.textareaRef.current) {
+      this.textareaRef.current.addEventListener('scroll', this.syncScroll);
+    }
+  }
+
+  componentDidUpdate() {
+    this.updateHighlights();
+  }
+
+  componentWillUnmount() {
+    if (this.textareaRef.current) {
+      this.textareaRef.current.removeEventListener('scroll', this.syncScroll);
+    }
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <div ref={this.highlightsRef} className="highlights"></div>
+        <textarea
+          ref={this.textareaRef}
+          value={this.state.text}
+          onChange={this.handleInput}
+          className="textarea"
+        ></textarea>
+      </div>
+    );
+  }
+}
+
+export default HighlightTextarea;
+
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 30px;
+  background-color: #f0f0f0;
+}
+
+.container {
+  position: relative;
+  width: 460px;
+  height: 180px;
+  font: 20px/28px 'Open Sans', sans-serif;
+}
+
+.textarea,
+.highlights {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font: 20px/28px 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  border: 2px solid #74637f;
+  resize: none;
+  overflow: auto;
+}
+
+.textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: #444;
+  z-index: 2;
+}
+
+.highlights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 1;
+  pointer-events: none;
+  color: #444;
+}
+
+mark {
+  background-color: #b1d5e5;
+  color: #444;
+}
