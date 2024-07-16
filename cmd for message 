@@ -1,0 +1,1 @@
+I'm working on updating the textarea in the `tx-framework-component`. I need to test the changes locally, but when I run `npm run build`, I encounter an error (see attached image). How can I resolve this?
