@@ -18,7 +18,7 @@ export class HighlightTextarea {
     'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
     'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
     't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-    '8', '9', '/', '-', '?', ':', '(', ')', '.', "'", '+'
+    '8', '9', '/', '-', '?', ':', '(', ')', '.', "'", '+', ' '
   ];
 
   applyHighlights(text: string): string {
@@ -37,6 +37,7 @@ export class HighlightTextarea {
   handleInput(event: Event) {
     const target = event.target as HTMLTextAreaElement;
     this.text = target.value;
+    this.updateHighlights();
   }
 
   syncScroll() {
@@ -50,10 +51,13 @@ export class HighlightTextarea {
     this.textareaRef = this.el.shadowRoot.querySelector('textarea');
     this.highlightsRef = this.el.shadowRoot.querySelector('.highlights');
     this.textareaRef.addEventListener('scroll', () => this.syncScroll());
+    this.updateHighlights();
   }
 
-  componentDidUpdate() {
-    this.highlightsRef.innerHTML = this.applyHighlights(this.text);
+  updateHighlights() {
+    if (this.highlightsRef) {
+      this.highlightsRef.innerHTML = this.applyHighlights(this.text);
+    }
   }
 
   render() {
@@ -65,6 +69,7 @@ export class HighlightTextarea {
     );
   }
 }
+
 
 
 
