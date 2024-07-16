@@ -1,3 +1,5 @@
-I'm working on updating the textarea in the `tx-framework-component`. I need to test the changes locally, but when I run `npm run build`, I encounter an error (see attached image). How can I resolve this?
+In the local setup, the `package-lock.json` shows the `cauiuse-list` module as missing (see the picture below).
 
+In the `release1.3.0` branch, I pulled a fresh copy of the code without any changes, installed the node modules using the same `package.json` and `package-lock.json`. However, when running `npm run build`, an error occurs (see the error below).
 
+Despite this, `npm run start` works fine. I also tried using npm version 20.
