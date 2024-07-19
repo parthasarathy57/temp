@@ -1,0 +1,72 @@
+import { Component, h, State, Element } from '@stencil/core';
+
+@Component({
+  tag: 'highlight-textarea',
+  styleUrl: 'highlight-textarea.css',
+  shadow: true,
+})
+export class HighlightTextarea {
+  @State() text: string = "This demo shows how to highlight specific keywords within a textarea. Feel free to edit this text. Words containing 'w' or 'g' will be highlighted.";
+
+  @Element() el: HTMLElement;
+
+  swiftCodeChars: string[] = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
+    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+    't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
+    '8', '9', '/', '-', '?', ':', '(', ')', '.', "'", '+', ' '
+  ];
+
+  applyHighlights(text: string): string {
+    return text
+      .split('')
+      .map((char) => {
+        if (!this.swiftCodeChars.includes(char)) {
+          return `<mark>${char}</mark>`;
+        }
+        return char;
+      })
+      .join('')
+      .replace(/\n$/g, '\n\n');
+  }
+
+  handleInput(event: Event) {
+    const target = event.target as HTMLTextAreaElement;
+    this.text = target.value;
+    this.updateHighlights();
+  }
+
+  syncScroll() {
+    const textarea = this.el.shadowRoot.querySelector('textarea');
+    const highlights = this.el.shadowRoot.querySelector('.highlights');
+    if (textarea && highlights) {
+      highlights.scrollTop = textarea.scrollTop;
+      highlights.scrollLeft = textarea.scrollLeft;
+    }
+  }
+
+  componentDidLoad() {
+    const textarea = this.el.shadowRoot.querySelector('textarea');
+    if (textarea) {
+      textarea.addEventListener('scroll', () => this.syncScroll());
+    }
+    this.updateHighlights();
+  }
+
+  updateHighlights() {
+    const highlights = this.el.shadowRoot.querySelector('.highlights');
+    if (highlights) {
+      highlights.innerHTML = this.applyHighlights(this.text);
+    }
+  }
+
+  render() {
+    return (
+      <div class="container">
+        <div class="highlights"></div>
+        <textarea value={this.text} onInput={(event) => this.handleInput(event)}></textarea>
+      </div>
+    );
+  }
+}
