@@ -1,0 +1,42 @@
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+textarea,
+.highlights {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border: none;
+  resize: none;
+  overflow: auto;
+}
+
+textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: #444;
+  z-index: 2;
+}
+
+.highlights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 1;
+  pointer-events: none;
+  color: #444;
+}
+
+mark {
+  background-color: #b1d5e5;
+  color: #444;
+}
