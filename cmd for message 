@@ -1,10 +1,1 @@
-Here's a rephrased version of your message:
-
----
-
-I have made the necessary changes for the above ticket in the `tx-framework-components` and `tx-react-components` repositories. The tickets are completed, but I have some doubts in three places. Specifically, when trying to get a prop as `string[]`, it doesn't seem to retrieve the values correctly.
-
-Could we connect for a code review and to address these issues?
-
----
-
+Based on the two tickets from the BA, I'm creating a free text textarea in Swift that highlights invalid characters while typing or pasting. Directly styling certain characters within a textarea isn't possible, so I've developed this solution.
