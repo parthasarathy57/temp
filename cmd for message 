@@ -1,5 +1,10 @@
-In the local setup, the `package-lock.json` shows the `cauiuse-list` module as missing (see the picture below).
+Here's a rephrased version of your message:
 
-In the `release1.3.0` branch, I pulled a fresh copy of the code without any changes, installed the node modules using the same `package.json` and `package-lock.json`. However, when running `npm run build`, an error occurs (see the error below).
+---
 
-Despite this, `npm run start` works fine. I also tried using npm version 20.
+I have made the necessary changes for the above ticket in the `tx-framework-components` and `tx-react-components` repositories. The tickets are completed, but I have some doubts in three places. Specifically, when trying to get a prop as `string[]`, it doesn't seem to retrieve the values correctly.
+
+Could we connect for a code review and to address these issues?
+
+---
+
