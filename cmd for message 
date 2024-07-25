@@ -1,1 +1,1 @@
-Based on the two tickets from the BA, I'm creating a free text textarea in Swift that highlights invalid characters while typing or pasting. Directly styling certain characters within a textarea isn't possible, so I've developed this solution.
+In our Swift project, we have three patterns: X, Y, and Z. Each time we use Swift free text, we call the desired pattern. The highlighting color change for the textarea is not working in the tx-web-component despite all modifications. To address this, I wrote code in the tx-framework-components to dynamically pass through the pattern.
