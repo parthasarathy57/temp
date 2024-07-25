@@ -1,1 +1,3 @@
-In our Swift project, we have three patterns: X, Y, and Z. Each time we use Swift free text, we call the desired pattern. The highlighting color change for the textarea is not working in the tx-web-component despite all modifications. To address this, I wrote code in the tx-framework-components to dynamically pass through the pattern.
+In the helper text, we must display any invalid characters found based on our requirements.
+
+In the tooltip, we need to show which characters are allowed.
