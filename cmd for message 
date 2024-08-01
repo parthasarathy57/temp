@@ -1,3 +1,16 @@
-I spoke with Clement and Emmanuel, and they confirmed that the highlighted text is completed. They want all the functionality code, including tippyjs and the overflow tooltip, moved to the `tx-web-component`. Once they confirm, the PR will be accepted.
+Sure, here is a revised version of your email:
 
-Tomorrow, I'm taking off. What should I do with the ticket? I have three tickets: one is completed, and two are pending because of the PR.
+---
+
+Subject: Field Responsiveness Issue in 1450+ Width
+
+Dear [Recipient's Name],
+
+I am writing to bring to your attention an issue we are experiencing with field responsiveness. Specifically, two fields are not responsive when the width exceeds 1450 pixels. Below this width, they function correctly.
+
+Could you please investigate and address this matter?
+
+Thank you for your assistance.
+
+Best regards,  
+[Your Name]
