@@ -1,0 +1,10 @@
+applyHighlights(text: string): string {
+  // Use a regular expression to mark all non-swiftCodeChars in a single pass.
+  const swiftCodeCharsSet = new Set(this.swiftCodeChars);
+  const markedText = text.replace(/./g, (char) => {
+    return swiftCodeCharsSet.has(char) ? char : `<mark>${char}</mark>`;
+  });
+
+  // Ensure the string ends with two newlines if it ends with a newline
+  return markedText.endsWith('\n') ? `${markedText}\n` : markedText;
+}
