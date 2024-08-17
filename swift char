@@ -44,3 +44,13 @@ sentance
 -------
 Our Q3 report shows a 15% increase in revenue! Strategic planning, market analysis, and team collaboration are key factors. Let's maintain this momentum and aim for a 20% growth in Q4.
 
+
+
+
+new 
+
+FtCodePatternX = `^[a-zA-Z0-9/?:().'+,\r\n-]+$';
+
+FtCodePatternY = `^[A-Z0-9., ()/='+:?!"%&*<>;-]*$';
+
+FtCodePatternZ = `^[a-zA-Z0-9., ()/='+:?!"%&*<>;{@#_\r\n-]*$";
