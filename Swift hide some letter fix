@@ -1,0 +1,30 @@
+highlightedText =[a-zA-Z0-9.,\-()/='+:?!" %&*<>;{@#_]*$;
+
+applyHighlights(heightText: string): string {
+  // Function to escape HTML special characters
+  const escapeHtml = (unsafe: string): string => {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+
+  return heightText && heightText
+    .split('')
+    .map((char) => {
+      if (this.highlightedText) {
+        const pattern = new RegExp(this.highlightedText);
+        const escapedChar = escapeHtml(char);  // Escape special characters
+
+        if (this.isHighlightedText && !pattern.test(escapedChar)) {
+          return `<mark>${escapedChar}</mark>`;
+        }
+        return escapedChar;
+      }
+      return char;
+    })
+    .join('')
+    .replace(/\n$/g, '\n\n');
+}
