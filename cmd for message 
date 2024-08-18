@@ -1,1 +1,5 @@
-Srini said the Blossom ticket is fine as it is, and there's no need to move it. It's not an issue.
+
+
+The highlighting console issue is caused by recent changes in the dependency schema. I'm currently resolving it, but in some cases, it's reflecting slowly, and when the maximum character limit is reached, the text gets rearranged.
+
+Should I create a ticket for this?
