@@ -1,5 +1,1 @@
-
-
-The highlighting console issue is caused by recent changes in the dependency schema. I'm currently resolving it, but in some cases, it's reflecting slowly, and when the maximum character limit is reached, the text gets rearranged.
-
-Should I create a ticket for this?
+In the Trade Express application, the "Transaction Work Desk" has a "Stage" column grid. The state description is fetched from the CodeDecode API, stored in session storage, matched with the stage code, and then used to set the "Stage" and "Stage Description" fields.
