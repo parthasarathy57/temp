@@ -1,0 +1,13 @@
+import { useMemo } from 'react';
+import debounce from 'lodash.debounce';
+
+const inputProps = useMemo(() => {
+  return debounce(() => {
+    return getInputProps({
+      ...props,
+      disabledConditions: getDisabledConditions(), // Add your logic for disabled conditions
+    }, currentFields, setCurrentFields, fieldRefs, (value) => {
+      onChange?.(value); // Optional chaining for onChange
+    });
+  }, 300);
+}, [props, currentFields, setCurrentFields, fieldRefs, onChange]);  // Add relevant dependencies
