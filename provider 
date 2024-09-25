@@ -1,0 +1,61 @@
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+// Define the types for the context state
+interface AppContextType {
+  count: number;
+  increment: () => void;
+}
+
+// Create the default context (can be null or default values)
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+// Create a Provider Component
+const AppProvider = ({ children }: { children: ReactNode }) => {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount(prevCount => prevCount + 1);
+
+  return (
+    <AppContext.Provider value={{ count, increment }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+// Custom hook to use the context
+const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error('useAppContext must be used within an AppProvider');
+  }
+  return context;
+};
+
+export { AppProvider, useAppContext };
+
+
+
+
+import React from 'react';
+import { AppProvider, useAppContext } from './AppContext';
+
+const Counter = () => {
+  const { count, increment } = useAppContext();
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <AppProvider>
+      <Counter />
+    </AppProvider>
+  );
+};
+
+export default App;
