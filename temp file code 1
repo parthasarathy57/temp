@@ -30,18 +30,18 @@ const updatedData = {
   },
 };
 
-// Function to compare two nested objects and log changes
-function compareObjects(obj1, obj2, path = "") {
+// Function to compare two nested objects and return changes from the second (updated) object
+function compareObjectsFromSecond(obj1, obj2, path = "") {
   const differences = [];
-  for (const key in obj1) {
-    if (obj1.hasOwnProperty(key)) {
+  for (const key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
       const currentPath = path ? `${path}.${key}` : key;
 
-      if (_.isObject(obj1[key]) && obj2[key]) {
+      if (_.isObject(obj2[key]) && obj1[key]) {
         // Recursive comparison for nested objects
-        differences.push(...compareObjects(obj1[key], obj2[key], currentPath));
+        differences.push(...compareObjectsFromSecond(obj1[key], obj2[key], currentPath));
       } else if (!_.isEqual(obj1[key], obj2[key])) {
-        // Log differences
+        // If value has changed, add to differences
         differences.push({
           path: currentPath,
           originalValue: obj1[key],
@@ -51,22 +51,10 @@ function compareObjects(obj1, obj2, path = "") {
     }
   }
 
-  // Check for new keys in obj2 not present in obj1
-  for (const key in obj2) {
-    if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
-      const currentPath = path ? `${path}.${key}` : key;
-      differences.push({
-        path: currentPath,
-        originalValue: undefined,
-        updatedValue: obj2[key],
-      });
-    }
-  }
-
   return differences;
 }
 
-// Compare the objects
-const differences = compareObjects(originalData, updatedData);
+// Compare the objects and get only the changes from the second object (updated data)
+const differencesFromSecond = compareObjectsFromSecond(originalData, updatedData);
 
-console.log("Changes detected:", differences);
+console.log("Changes detected in the updated data:", differencesFromSecond);
