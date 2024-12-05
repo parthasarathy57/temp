@@ -1,0 +1,33 @@
+import _ from "lodash";
+
+const array1 = {
+  Test1: { id: 1, name: "Alice", age: 25 },
+  Test2: { id: 2, name: "Bob", age: 30 },
+};
+
+const array2 = {
+  Test1: { id: 1, name: "Alice", age: 26 }, // Value changed (age)
+  Test2: { id: 2, name: "Bob", age: 30 }, // No change
+  Test3: { id: 3, name: "Charlie", age: 35 }, // New object
+};
+
+// Convert objects to arrays of values
+const array1Values = Object.values(array1);
+const array2Values = Object.values(array2);
+
+// Find objects in array1 not deeply equal to those in array2
+const uniqueFromArray1 = array1Values.filter(
+  (obj1) => !array2Values.some((obj2) => obj1.id === obj2.id && _.isEqual(obj1, obj2))
+);
+
+// Find objects in array2 not deeply equal to those in array1
+const uniqueFromArray2 = array2Values.filter(
+  (obj2) => !array1Values.some((obj1) => obj1.id === obj2.id && _.isEqual(obj1, obj2))
+);
+
+// Combine unique objects
+const uniqueObjects = [...uniqueFromArray1, ...uniqueFromArray2];
+
+console.log(uniqueObjects);
+// Output: 
+// [ { id: 1, name: 'Alice', age: 26 }, { id: 3, name: 'Charlie', age: 35 } ]
