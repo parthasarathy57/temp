@@ -1,33 +1,72 @@
 import _ from "lodash";
 
-const array1 = {
-  Test1: { id: 1, name: "Alice", age: 25 },
-  Test2: { id: 2, name: "Bob", age: 30 },
+const originalData = {
+  letterOfCreditHeaderDetailsELC: {
+    amendmentDetails: { count: 12 },
+    internalDataDetailsELC: { count: 22 },
+    generalELCDetails: { count: 37 },
+    shipmentDetailsELC: { count: 13 },
+    insuranceDetails: { count: 4 },
+    goodsDescriptionELC: { count: 2 },
+    documentsRequiredELC: { count: 3 },
+    otherTermsAndConditionsELC: { count: 12 },
+    bankInstructionsELC: { count: 6 },
+    filimitBookingDetails: { count: 3 },
+  },
 };
 
-const array2 = {
-  Test1: { id: 1, name: "Alice", age: 26 }, // Value changed (age)
-  Test2: { id: 2, name: "Bob", age: 30 }, // No change
-  Test3: { id: 3, name: "Charlie", age: 35 }, // New object
+const updatedData = {
+  letterOfCreditHeaderDetailsELC: {
+    amendmentDetails: { count: 15 }, // Changed
+    internalDataDetailsELC: { count: 22 },
+    generalELCDetails: { count: 40 }, // Changed
+    shipmentDetailsELC: { count: 13 },
+    insuranceDetails: { count: 4 },
+    goodsDescriptionELC: { count: 2 },
+    documentsRequiredELC: { count: 3 },
+    otherTermsAndConditionsELC: { count: 12 },
+    bankInstructionsELC: { count: 8 }, // Changed
+    filimitBookingDetails: { count: 3 },
+  },
 };
 
-// Convert objects to arrays of values
-const array1Values = Object.values(array1);
-const array2Values = Object.values(array2);
+// Function to compare two nested objects and log changes
+function compareObjects(obj1, obj2, path = "") {
+  const differences = [];
+  for (const key in obj1) {
+    if (obj1.hasOwnProperty(key)) {
+      const currentPath = path ? `${path}.${key}` : key;
 
-// Find objects in array1 not deeply equal to those in array2
-const uniqueFromArray1 = array1Values.filter(
-  (obj1) => !array2Values.some((obj2) => obj1.id === obj2.id && _.isEqual(obj1, obj2))
-);
+      if (_.isObject(obj1[key]) && obj2[key]) {
+        // Recursive comparison for nested objects
+        differences.push(...compareObjects(obj1[key], obj2[key], currentPath));
+      } else if (!_.isEqual(obj1[key], obj2[key])) {
+        // Log differences
+        differences.push({
+          path: currentPath,
+          originalValue: obj1[key],
+          updatedValue: obj2[key],
+        });
+      }
+    }
+  }
 
-// Find objects in array2 not deeply equal to those in array1
-const uniqueFromArray2 = array2Values.filter(
-  (obj2) => !array1Values.some((obj1) => obj1.id === obj2.id && _.isEqual(obj1, obj2))
-);
+  // Check for new keys in obj2 not present in obj1
+  for (const key in obj2) {
+    if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
+      const currentPath = path ? `${path}.${key}` : key;
+      differences.push({
+        path: currentPath,
+        originalValue: undefined,
+        updatedValue: obj2[key],
+      });
+    }
+  }
 
-// Combine unique objects
-const uniqueObjects = [...uniqueFromArray1, ...uniqueFromArray2];
+  return differences;
+}
 
-console.log(uniqueObjects);
-// Output: 
-// [ { id: 1, name: 'Alice', age: 26 }, { id: 3, name: 'Charlie', age: 35 } ]
+// Compare the objects
+const differences = compareObjects(originalData, updatedData);
+
+console.log("Changes detected:", differences);
