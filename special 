@@ -1,29 +1,21 @@
- applyHighlights(heightText: string): string(
+function compareObjectsFromSecond(obj1, obj2, path = "") {
+  const differences = [];
+  for (const key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      const currentPath = path ? `${path}.${key}` : key;
 
-return heightText && heightText
-
-.split('')
-
-.map((char) => {
-
-if (this.highlightedText) {
-
-const pattern = new RegExp(this.highlightedText)
-
-if (this.isHighlightedText && (!pattern.test(char))) {
-
-return <mark>${char}</mark>';
-
+      if (_.isPlainObject(obj2[key]) && _.isPlainObject(obj1?.[key])) {
+        // Recursive comparison for plain objects
+        differences.push(...compareObjectsFromSecond(obj1[key], obj2[key], currentPath));
+      } else if (obj1?.[key] !== obj2[key]) {
+        // Detect differences or missing keys
+        differences.push({
+          path: currentPath,
+          originalValue: obj1?.[key] !== undefined ? obj1[key] : null,
+          updatedValue: obj2[key],
+        });
+      }
+    }
+  }
+  return differences;
 }
-
-return char;
-
-}
-
-})
-
-.join('')
-
-.replace(/\n$/g, '\n\n');
-}
-
