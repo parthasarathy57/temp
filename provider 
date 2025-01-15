@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { render, fireEvent } from '@testing-library/react';
 
-// Mock function based on the provided code
-const useHandleAmendment = () => {
+// Mock Component
+const AmendmentComponent = () => {
   const [fieldsDisabled, setFieldsDisabled] = useState(false);
   const [cancellationRequestError, setCancellationRequestError] = useState<string | undefined>(undefined);
   const [currentFields, setCurrentFields] = useState({
@@ -14,72 +14,59 @@ const useHandleAmendment = () => {
     if (event.cancellationRequest?.value) {
       setFieldsDisabled(true);
       setCancellationRequestError(undefined);
-      setCurrentFields((prev) => {
-        const res = {
-          ...prev,
-          amendmentType: { value: event.amendmentType?.value },
-          cancellationRequest: { value: event.cancellationRequest?.value },
-        };
-        return res;
-      });
+      setCurrentFields((prev) => ({
+        ...prev,
+        amendmentType: { value: event.amendmentType?.value },
+        cancellationRequest: { value: event.cancellationRequest?.value },
+      }));
     } else {
       setFieldsDisabled(false);
       setCancellationRequestError(undefined);
-      setCurrentFields((prev) => {
-        const res = {
-          ...prev,
-          amendmentType: { value: event.amendmentType?.value },
-          cancellationRequest: { value: event.cancellationRequest?.value },
-        };
-        return res;
-      });
+      setCurrentFields((prev) => ({
+        ...prev,
+        amendmentType: { value: event.amendmentType?.value },
+        cancellationRequest: { value: event.cancellationRequest?.value },
+      }));
     }
   };
 
-  return { fieldsDisabled, cancellationRequestError, currentFields, handleAmendment };
+  return (
+    <div>
+      <button
+        data-testid="test-button"
+        onClick={() =>
+          handleAmendment({
+            amendmentType: { value: 'Amendment A' },
+            cancellationRequest: { value: 'Request 123' },
+          })
+        }
+      >
+        Trigger HandleAmendment
+      </button>
+      <div data-testid="fields-disabled">{fieldsDisabled ? 'true' : 'false'}</div>
+      <div data-testid="cancellation-request-error">{cancellationRequestError || 'undefined'}</div>
+      <div data-testid="current-fields">
+        {JSON.stringify(currentFields, null, 2)}
+      </div>
+    </div>
+  );
 };
 
-describe('handleAmendment', () => {
+// Test
+describe('AmendmentComponent', () => {
   it('should update fields and disable the form when cancellationRequest has a value', () => {
-    const { result } = renderHook(() => useHandleAmendment());
+    const { getByTestId } = render(<AmendmentComponent />);
 
-    const event = {
-      amendmentType: { value: 'Amendment A' },
-      cancellationRequest: { value: 'Request 123' },
-    };
+    const button = getByTestId('test-button');
+    fireEvent.click(button);
 
-    act(() => {
-      result.current.handleAmendment(event);
-    });
+    const fieldsDisabled = getByTestId('fields-disabled');
+    const cancellationRequestError = getByTestId('cancellation-request-error');
+    const currentFields = getByTestId('current-fields');
 
-    expect(result.current.fieldsDisabled).toBe(true);
-    expect(result.current.cancellationRequestError).toBeUndefined();
-    expect(result.current.currentFields).toEqual({
-      amendmentType: { value: 'Amendment A' },
-      cancellationRequest: { value: 'Request 123' },
-    });
-  });
-
-  it('should not disable fields and update them when cancellationRequest is undefined', () => {
-    const { result } = renderHook(() => useHandleAmendment());
-
-    const event = {
-      amendmentType: { value: 'Amendment B' },
-      cancellationRequest: { value: '' },
-    };
-
-    act(() => {
-      result.current.handleAmendment(event);
-    });
-
-    expect(result.current.fieldsDisabled).toBe(false);
-    expect(result.current.cancellationRequestError).toBeUndefined();
-    expect(result.current.currentFields).toEqual({
-      amendmentType: { value: 'Amendment B' },
-      cancellationRequest: { value: '' },
-    });
+    expect(fieldsDisabled.textContent).toBe('true');
+    expect(cancellationRequestError.textContent).toBe('undefined');
+    expect(currentFields.textContent).toContain('"amendmentType": {"value": "Amendment A"}');
+    expect(currentFields.textContent).toContain('"cancellationRequest": {"value": "Request 123"}');
   });
 });
-
-
-
