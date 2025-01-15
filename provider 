@@ -1,32 +1,85 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { renderHook, act } from '@testing-library/react';
+import { useState } from 'react';
 
-// Define the types for the context value
-interface AppContextType {
-  data: boolean;
-  setData: (value: boolean) => void;
-}
+// Mock function based on the provided code
+const useHandleAmendment = () => {
+  const [fieldsDisabled, setFieldsDisabled] = useState(false);
+  const [cancellationRequestError, setCancellationRequestError] = useState<string | undefined>(undefined);
+  const [currentFields, setCurrentFields] = useState({
+    amendmentType: { value: '' },
+    cancellationRequest: { value: '' },
+  });
 
-// Create the context with default undefined
-const AppContext = createContext<AppContextType | undefined>(undefined);
+  const handleAmendment = (event: any) => {
+    if (event.cancellationRequest?.value) {
+      setFieldsDisabled(true);
+      setCancellationRequestError(undefined);
+      setCurrentFields((prev) => {
+        const res = {
+          ...prev,
+          amendmentType: { value: event.amendmentType?.value },
+          cancellationRequest: { value: event.cancellationRequest?.value },
+        };
+        return res;
+      });
+    } else {
+      setFieldsDisabled(false);
+      setCancellationRequestError(undefined);
+      setCurrentFields((prev) => {
+        const res = {
+          ...prev,
+          amendmentType: { value: event.amendmentType?.value },
+          cancellationRequest: { value: event.cancellationRequest?.value },
+        };
+        return res;
+      });
+    }
+  };
 
-// Create a provider component
-const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<boolean>(false); // Initialize the state with a boolean
-
-  return (
-    <AppContext.Provider value={{ data, setData }}>
-      {children}
-    </AppContext.Provider>
-  );
+  return { fieldsDisabled, cancellationRequestError, currentFields, handleAmendment };
 };
 
-// Custom hook to use the AppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider');
-  }
-  return context;
-};
+describe('handleAmendment', () => {
+  it('should update fields and disable the form when cancellationRequest has a value', () => {
+    const { result } = renderHook(() => useHandleAmendment());
 
-export { AppProvider, useAppContext };
+    const event = {
+      amendmentType: { value: 'Amendment A' },
+      cancellationRequest: { value: 'Request 123' },
+    };
+
+    act(() => {
+      result.current.handleAmendment(event);
+    });
+
+    expect(result.current.fieldsDisabled).toBe(true);
+    expect(result.current.cancellationRequestError).toBeUndefined();
+    expect(result.current.currentFields).toEqual({
+      amendmentType: { value: 'Amendment A' },
+      cancellationRequest: { value: 'Request 123' },
+    });
+  });
+
+  it('should not disable fields and update them when cancellationRequest is undefined', () => {
+    const { result } = renderHook(() => useHandleAmendment());
+
+    const event = {
+      amendmentType: { value: 'Amendment B' },
+      cancellationRequest: { value: '' },
+    };
+
+    act(() => {
+      result.current.handleAmendment(event);
+    });
+
+    expect(result.current.fieldsDisabled).toBe(false);
+    expect(result.current.cancellationRequestError).toBeUndefined();
+    expect(result.current.currentFields).toEqual({
+      amendmentType: { value: 'Amendment B' },
+      cancellationRequest: { value: '' },
+    });
+  });
+});
+
+
+
