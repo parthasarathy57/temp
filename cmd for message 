@@ -1,2 +1,1 @@
-I am experiencing repeated pipeline failures despite having a stable network connection. I tested it on different systems but encountered the same issue. I also modified the azure-pipeline-npm.yml file, changing pool: sc-linux-large to sc-linux, but the problem persists. Could you please help resolve this?
-
+Here are the LTP details. The configuration changes from last week have already been moved, but the earlier ones are still pending. Shall we proceed with moving those as well?
